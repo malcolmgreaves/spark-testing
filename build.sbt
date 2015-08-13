@@ -1,6 +1,6 @@
 organization := "com.gonitro.research"
 
-name := "sparktesting"
+name := "spark-testing"
 
 version := "0.0.1"
 
