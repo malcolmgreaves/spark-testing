@@ -1,8 +1,8 @@
 organization := "com.gonitro.research"
 
-name := "sdptesting"
+name := "sparktesting"
 
-version := "0.2.0"
+version := "0.0.1"
 
 lazy val jvmVer = com.nitro.build.Runtime.Jvm7
 
@@ -25,7 +25,6 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % "1.4.0",
-  "org.apache.kafka" %% "kafka"      % "0.8.2.1",
   "org.scalatest"    %% "scalatest"  % "2.2.4" 
 )
 
@@ -33,7 +32,7 @@ lazy val devs = Seq(
   com.nitro.build.Publish.Developer("mgreaves", "Malcolm Greaves")
 )
 
-com.nitro.build.Publish.settings("Nitro", "sdp_testing", devs)
+com.nitro.build.Publish.settings("Nitro", name.toString, devs)
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-v")
 
