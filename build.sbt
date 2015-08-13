@@ -39,3 +39,7 @@ testOptions += Tests.Argument(TestFrameworks.JUnit, "-v")
 
 testOptions in Test += Tests.Argument("-oF")
 
+fork in Test := false
+
+parallelExecution in Test := true
+
