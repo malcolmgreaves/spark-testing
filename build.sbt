@@ -4,19 +4,21 @@ name := "spark-testing"
 
 version := "0.0.1"
 
-lazy val jvmVer = com.nitro.build.Runtime.Jvm7
+// bring the sbt-dev-settings stuff into scope
 
-com.nitro.build.Compile.baseSettings(
-  jvmVer,
-  fatalWarnings = true,
-  formatOnCompile = false
-)
+import com.nitro.build._
 
-scalaVersion := "2.11.7"
+import PublishHelpers._
 
-crossScalaVersions := Seq(scalaVersion.toString, "2.10.5")
+// use it to configure this build's scala and java settings
 
-javaOptions := com.nitro.build.Runtime.javaSettings(jvmVer)
+lazy val jvmVer = JvmRuntime.Jvm7
+
+CompileScalaJava.librarySettings(CompileScalaJava.Config.spark)
+
+javaOptions := JvmRuntime.settings(jvmVer)
+
+// standard dependencies & their resolvers
 
 resolvers ++= Seq(
   "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/",
@@ -28,11 +30,19 @@ libraryDependencies ++= Seq(
   "org.scalatest"    %% "scalatest"  % "2.2.4" 
 )
 
-lazy val devs = Seq(
-  com.nitro.build.Publish.Developer("mgreaves", "Malcolm Greaves")
+// publishing settings
+
+Publish.settings(
+  repo = Repository.github("Nitro", name.toString),
+  developers = 
+    Seq(
+      Dev("mgreaves", "Malcolm Greaves")
+    ),
+  art = ArtifactInfo.sonatype,
+  lic = License.apache20
 )
 
-com.nitro.build.Publish.settings("Nitro", name.toString, devs)
+// unit test configuration
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-v")
 
