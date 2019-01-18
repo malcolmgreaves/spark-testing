@@ -1,6 +1,6 @@
 sparktesting
 ============
-[![Build Status](https://travis-ci.org/malcolmgreaves/spark-testing.svg?branch=master)](https://travis-ci.org/malcolmgreaves/spark-testing)
+[![Build Status](https://travis-ci.org/malcolmgreaves/spark-testing.svg?branch=master)](https://travis-ci.org/malcolmgreaves/spark-testing) [![Coverage Status](https://coveralls.io/repos/github/malcolmgreaves/spark-testing/badge.svg?branch=master)](https://coveralls.io/github/malcolmgreaves/spark-testing?branch=master)
 
 A tiny project that assists in writing Apache Spark based unit tests by 
 providing a single shared `SparkContext`.
