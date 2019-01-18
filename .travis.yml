@@ -3,5 +3,6 @@ scala:
   - 2.11.12
 jdk:
   - oraclejdk8
-script: "sbt test"
-after_success: "sbt coverage test coveralls"
+script: "sbt clean coverage test"
+after_success: "sbt coverageReport coveralls"
+
