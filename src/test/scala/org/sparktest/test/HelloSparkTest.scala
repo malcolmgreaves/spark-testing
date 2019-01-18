@@ -1,4 +1,4 @@
-package com.nitro.test
+package org.sparktest.test
 
 class HelloSparkTest extends SparkTesting {
 

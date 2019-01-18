@@ -1,13 +1,12 @@
-package com.nitro.test
+package org.sparktest.test
 
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
-import com.nitro.util.sync.WaitGroup
-import org.scalatest.{ Tag, BeforeAndAfterAll, FunSuite }
+import org.scalatest.{BeforeAndAfterAll, FunSuite, Tag}
 
 import scala.util.Random
-
-import org.apache.spark.{ SparkConf, SparkContext }
+import org.apache.spark.{SparkConf, SparkContext}
+import org.sparktest.util.sync.WaitGroup
 
 object SparkTesting extends org.scalatest.Tag("spark") {
 
@@ -62,20 +61,20 @@ object SparkTesting extends org.scalatest.Tag("spark") {
   private[this] val mutex = new ReentrantReadWriteLock(true)
 
   /**
-   * WARNING :: Mutable! Global!
-   *
-   * Do not access this variable in any other manner except
-   * through the `sc` and `shutdown`methods. This is to ensure that
-   * there are no race conditions nor two spark contexts in the
-   * same JVM at one time.
-   */
+    * WARNING :: Mutable! Global!
+    *
+    * Do not access this variable in any other manner except
+    * through the `sc` and `shutdown`methods. This is to ensure that
+    * there are no race conditions nor two spark contexts in the
+    * same JVM at one time.
+    */
   private[this] var scInternal: SparkContext = _
 
   /**
-   * A Spark configuration that is in local mode with 3 cores, uses the
-   * Kryo serializer, and has the name "unit test XXX-XXXX" where the Xs
-   * are random String elements.
-   */
+    * A Spark configuration that is in local mode with 3 cores, uses the
+    * Kryo serializer, and has the name "unit test XXX-XXXX" where the Xs
+    * are random String elements.
+    */
   lazy val defaultSparkConf: SparkConf =
     new SparkConf()
       .setMaster("local[3]")
@@ -83,11 +82,12 @@ object SparkTesting extends org.scalatest.Tag("spark") {
       .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
 
   /**
-   * BLOCKING OPERATION
-   *
-   * Blocking must wait for interal write lock.
-   */
-  private[test] def sc(configIfInit: => SparkConf = defaultSparkConf): SparkContext =
+    * BLOCKING OPERATION
+    *
+    * Blocking must wait for interal write lock.
+    */
+  private[test] def sc(
+      configIfInit: => SparkConf = defaultSparkConf): SparkContext =
     try {
       mutex.writeLock.lock()
       if (scInternal == null) {
@@ -100,11 +100,11 @@ object SparkTesting extends org.scalatest.Tag("spark") {
     }
 
   /**
-   * BLOCKING OPERATION
-   *
-   *
-   * Blocking must wait for internal write lock.
-   */
+    * BLOCKING OPERATION
+    *
+    *
+    * Blocking must wait for internal write lock.
+    */
   private[test] def shutdown(): Unit =
     try {
       mutex.writeLock.lock()
@@ -134,44 +134,47 @@ trait SparkTesting extends FunSuite with BeforeAndAfterAll {
   }
 
   /**
-   * Calls the parent `test` method with the same parameters, except
-   * that there is only one tag that is used: `AltSparkTesting`.
-   */
-  final override def test(testName: String, ignored: Tag*)(testFun: => Unit): Unit =
+    * Calls the parent `test` method with the same parameters, except
+    * that there is only one tag that is used: `AltSparkTesting`.
+    */
+  final def test(testName: String, ignored: Tag*)(testFun: => Unit): Unit =
     super.test(testName, SparkTesting)(testFun)
 
   /**
-   * Calls the parent `ignore` method with the same parameters, except
-   * that there is only one tag that is used: `AltSparkTesting`.
-   */
-  final override def ignore(testName: String, ignored: Tag*)(testFun: => Unit): Unit =
+    * Calls the parent `ignore` method with the same parameters, except
+    * that there is only one tag that is used: `AltSparkTesting`.
+    */
+  final def ignore(testName: String, ignored: Tag*)(testFun: => Unit): Unit =
     super.ignore(testName, SparkTesting)(testFun)
 
   /**
-   * Runs as a FunSuite test: calls this overriden test method. Uses a shared
-   * SparkContext to run the supplied test function `testFun`.
-   */
+    * Runs as a FunSuite test: calls this overriden test method. Uses a shared
+    * SparkContext to run the supplied test function `testFun`.
+    */
   final def sparkTest(testName: String)(testFun: SparkContext => Any): Unit =
     test(testName) {
       SparkTesting.runWithSpark(testFun)
     }
 
   /**
-   * An ignored Spark-enabled unit test. Useful when one must temporarily
-   * disable a suite's test during gnarly debugging or development.
-   *
-   * NOTE:
-   *
-   * A stylistic break in naming convention is used in this method. Since its
-   * use is in test code, this method name should never see the light of day
-   * in any publicly facing APIs (or even internal ones). The concession in
-   * naming convention is done out of the following practical observation:
-   *
-   * It is easier to prepend "ignore_" to an existing spark test definition than it
-   * is to prepend "ignore", delete the "s", and then type in an "S" to keep
-   * camel case naming convention. ("ignore_sparkTest" vs. "ignoreSparkTest")
-   */
-  final def ignore_sparkTest(testName: String)(ignoredTestFun: SparkContext => Any): Unit =
-    ignore(testName) { () }
+    * An ignored Spark-enabled unit test. Useful when one must temporarily
+    * disable a suite's test during gnarly debugging or development.
+    *
+    * NOTE:
+    *
+    * A stylistic break in naming convention is used in this method. Since its
+    * use is in test code, this method name should never see the light of day
+    * in any publicly facing APIs (or even internal ones). The concession in
+    * naming convention is done out of the following practical observation:
+    *
+    * It is easier to prepend "ignore_" to an existing spark test definition than it
+    * is to prepend "ignore", delete the "s", and then type in an "S" to keep
+    * camel case naming convention. ("ignore_sparkTest" vs. "ignoreSparkTest")
+    */
+  final def ignore_sparkTest(testName: String)(
+      ignoredTestFun: SparkContext => Any): Unit =
+    ignore(testName) {
+      ()
+    }
 
 }
