@@ -1,6 +1,4 @@
-package com.nitro.test
-
-import org.sparktest.test.SparkTesting
+package org.sparktest.test
 
 import scala.util.Random
 
