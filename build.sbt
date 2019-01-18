@@ -12,7 +12,6 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.5"
 )
 
-
 // scala compilation settings
 lazy val javaV = "1.8"
 scalaVersion in ThisBuild := "2.11.12"
@@ -61,8 +60,11 @@ publishMavenStyle := true
 isSnapshot := false
 publishArtifact := true
 publishArtifact in Test := false
-publishTo := Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
-pomIncludeRepository := { _ => false }
+publishTo := Some(
+  "releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
+pomIncludeRepository := { _ =>
+  false
+}
 pomExtra := {
   <url>https://github.com/malcolmgreaves/spark-testing</url>
     <licenses>
