@@ -1,5 +1,7 @@
 package com.nitro.test
 
+import org.sparktest.test.SparkTesting
+
 import scala.util.Random
 
 class UniformSparkTest extends SparkTesting {

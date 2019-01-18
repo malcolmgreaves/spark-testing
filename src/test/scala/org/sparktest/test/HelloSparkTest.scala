@@ -1,5 +1,7 @@
 package com.nitro.test
 
+import org.sparktest.test.SparkTesting
+
 class HelloSparkTest extends SparkTesting {
 
   sparkTest("Hello world!") { sc =>

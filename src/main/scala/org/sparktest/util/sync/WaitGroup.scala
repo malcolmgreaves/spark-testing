@@ -1,4 +1,4 @@
-package com.nitro.util.sync
+package org.sparktest.util.sync
 
 import java.util.concurrent.locks.ReentrantReadWriteLock
 

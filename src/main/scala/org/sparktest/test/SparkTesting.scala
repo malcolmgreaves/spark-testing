@@ -1,13 +1,12 @@
-package com.nitro.test
+package org.sparktest.test
 
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
-import com.nitro.util.sync.WaitGroup
-import org.scalatest.{ Tag, BeforeAndAfterAll, FunSuite }
+import org.scalatest.{BeforeAndAfterAll, FunSuite, Tag}
 
 import scala.util.Random
-
-import org.apache.spark.{ SparkConf, SparkContext }
+import org.apache.spark.{SparkConf, SparkContext}
+import org.sparktest.util.sync.WaitGroup
 
 object SparkTesting extends org.scalatest.Tag("spark") {
 
