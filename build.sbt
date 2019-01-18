@@ -2,6 +2,8 @@ organization := "io.malcolmgreaves"
 name := "spark-testing"
 version := "0.0.2"
 
+coverageEnabled := true
+
 // dependencies & their resolvers
 resolvers ++= Seq(
   "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/",
